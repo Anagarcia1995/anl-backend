@@ -12,6 +12,11 @@ const eventSchema = new mongoose.Schema(
       trim: true
     },
 
+    ticketUrl: {
+      type: String,
+      trim: true
+    },
+
     city: {
       type: String,
       required: true,
