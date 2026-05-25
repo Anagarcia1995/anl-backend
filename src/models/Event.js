@@ -18,7 +18,7 @@ const eventSchema = new mongoose.Schema(
       trim: true
     },
 
-    country: {
+    countryCode: {
       type: String,
       required: true,
       trim: true
