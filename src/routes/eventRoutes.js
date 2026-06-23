@@ -1,3 +1,5 @@
+const { verifyToken } = require("../middleware/authMiddleware");
+
 const express = require('express');
 
 const router = express.Router();
@@ -14,10 +16,10 @@ router.get('/upcoming', getUpcomingEvents);
 
 router.get('/:id', getEventById);
 
-router.post('/', createEvent);
+router.post('/', verifyToken, createEvent);
 
-router.put('/:id', updateEvent);
+router.put('/:id', verifyToken, updateEvent);
 
-router.delete('/:id', deleteEvent);
+router.delete('/:id', verifyToken, deleteEvent);
 
 module.exports = router;
