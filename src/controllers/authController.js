@@ -44,9 +44,17 @@ const login = async (req, res) => {
 };
 
 const me = async (req, res) => {
+  const user = await User.findById(req.user.userId);
+
+  if (!user) {
+    return res.status(404).json({
+      message: "Usuario no encontrado",
+    });
+  }
+
   res.status(200).json({
     message: "Usuario autenticado",
-    user: req.user,
+    user,
   });
 };
 
