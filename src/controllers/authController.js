@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 const login = async (req, res) => {
   try {
@@ -13,8 +14,9 @@ const login = async (req, res) => {
       });
     }
 
-    // NUEVO PASO
-    if (password !== user.password) {
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
       return res.status(401).json({
         message: "Contraseña incorrecta",
       });
@@ -34,7 +36,11 @@ const login = async (req, res) => {
     res.status(200).json({
       message: "Login correcto",
       token,
-      user,
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role
+      }
     });
   } catch (error) {
     res.status(500).json({
@@ -54,8 +60,54 @@ const me = async (req, res) => {
 
   res.status(200).json({
     message: "Usuario autenticado",
-    user,
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role
+      }
   });
 };
 
-module.exports = { login, me };
+
+const registerAdmin = async (req, res) => {
+  try {
+    const { email, password } = req.body
+
+    const existingUser = await User.findOne({ email })
+
+    if (existingUser) {
+      return res.status(400).json({
+        message: "Usuario ya existe"
+      })
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const user = await User.create({
+      email,
+      password: hashedPassword,
+      role: "admin"
+    })
+
+    res.status(201).json({
+      message: "Admin creado",
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role
+      }
+    })
+  } catch (error) {
+    res.status(500).json({
+      message: error.message
+    })
+  }
+}
+
+
+
+module.exports = {
+  login,
+  me,
+  registerAdmin
+};
