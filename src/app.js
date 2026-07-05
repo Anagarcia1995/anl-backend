@@ -4,6 +4,8 @@ const helmet = require("helmet");
 
 const eventRoutes = require('./routes/eventRoutes');
 const authRoutes = require('./routes/authRoutes');
+const releaseRoutes = require("./routes/releaseRoutes");
+const path = require("path");
 
 const app = express();
 app.use(helmet());
@@ -23,11 +25,16 @@ app.use(cors({
   }
 }));
 
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"))
+);
 
 app.use(express.json());
 
 app.use("/auth", authRoutes);
 app.use('/api/events', eventRoutes);
+app.use("/api/releases", releaseRoutes);
 
 app.get('/', (req, res) => {
   res.json({
