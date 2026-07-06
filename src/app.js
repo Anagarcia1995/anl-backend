@@ -8,7 +8,14 @@ const releaseRoutes = require("./routes/releaseRoutes");
 const path = require("path");
 
 const app = express();
-app.use(helmet());
+
+app.use(
+  helmet({
+    crossOriginResourcePolicy: {
+      policy: "cross-origin",
+    },
+  })
+);
 
 const allowedOrigins = [
   "http://localhost:5173",

@@ -4,14 +4,17 @@ const getAllReleases = async (req, res) => {
   try {
     const releases = await Release.find().sort({ releaseDate: -1 });
 
-    res.json(releases);
+    res.status(200).json({
+      success: true,
+      data: releases,
+    });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: "Error getting releases",
     });
   }
 };
-
 
 const getReleaseById = async (req, res) => {
   try {
@@ -19,22 +22,25 @@ const getReleaseById = async (req, res) => {
 
     if (!release) {
       return res.status(404).json({
+        success: false,
         message: "Release not found",
       });
     }
 
-    res.json(release);
+    res.status(200).json({
+      success: true,
+      data: release,
+    });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: "Error getting release",
     });
   }
 };
 
-
 const createRelease = async (req, res) => {
   try {
-
     const release = await Release.create({
       ...req.body,
       coverImage: req.file
@@ -42,20 +48,21 @@ const createRelease = async (req, res) => {
         : "",
     });
 
-    res.status(201).json(release);
-
+    res.status(201).json({
+      success: true,
+      data: release,
+    });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: "Error creating release",
       error: error.message,
     });
   }
 };
 
-
 const updateRelease = async (req, res) => {
   try {
-
     const updateData = {
       ...req.body,
     };
@@ -75,20 +82,23 @@ const updateRelease = async (req, res) => {
 
     if (!release) {
       return res.status(404).json({
+        success: false,
         message: "Release not found",
       });
     }
 
-    res.json(release);
-
+    res.status(200).json({
+      success: true,
+      data: release,
+    });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: "Error updating release",
       error: error.message,
     });
   }
 };
-
 
 const deleteRelease = async (req, res) => {
   try {
@@ -96,20 +106,22 @@ const deleteRelease = async (req, res) => {
 
     if (!release) {
       return res.status(404).json({
+        success: false,
         message: "Release not found",
       });
     }
 
-    res.json({
+    res.status(200).json({
+      success: true,
       message: "Release deleted successfully",
     });
   } catch (error) {
     res.status(500).json({
+      success: false,
       message: "Error deleting release",
     });
   }
 };
-
 
 module.exports = {
   getAllReleases,
