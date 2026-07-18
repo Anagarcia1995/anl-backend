@@ -41,10 +41,12 @@ const getReleaseById = async (req, res) => {
 
 const createRelease = async (req, res) => {
   try {
+    console.log("FILE:", req.file);
+
     const release = await Release.create({
       ...req.body,
       coverImage: req.file
-        ? `/uploads/covers/${req.file.filename}`
+        ? req.file.path
         : "",
     });
 
@@ -63,12 +65,14 @@ const createRelease = async (req, res) => {
 
 const updateRelease = async (req, res) => {
   try {
+    console.log("FILE:", req.file);
+    
     const updateData = {
       ...req.body,
     };
 
     if (req.file) {
-      updateData.coverImage = `/uploads/covers/${req.file.filename}`;
+      updateData.coverImage = req.file.path;
     }
 
     const release = await Release.findByIdAndUpdate(
