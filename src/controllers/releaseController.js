@@ -41,8 +41,6 @@ const getReleaseById = async (req, res) => {
 
 const createRelease = async (req, res) => {
   try {
-    console.log("FILE:", req.file);
-
     const release = await Release.create({
       ...req.body,
       coverImage: req.file
@@ -64,9 +62,7 @@ const createRelease = async (req, res) => {
 };
 
 const updateRelease = async (req, res) => {
-  try {
-    console.log("FILE:", req.file);
-    
+  try {    
     const updateData = {
       ...req.body,
     };
