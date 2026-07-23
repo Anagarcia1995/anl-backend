@@ -66,9 +66,14 @@ const releaseSchema = new mongoose.Schema(
       default: "",
     },
 
-    featured: {
+    pinned: {
       type: Boolean,
       default: false,
+    },
+
+    pinOrder: {
+      type: Number,
+      default: null,
     },
   },
   {

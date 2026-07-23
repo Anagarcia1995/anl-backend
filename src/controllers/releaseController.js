@@ -123,10 +123,43 @@ const deleteRelease = async (req, res) => {
   }
 };
 
+const updatePinOrder = async (req, res) => {
+  try {
+    const releases = req.body
+
+await Promise.all(
+  releases.map((release) =>
+    Release.findByIdAndUpdate(
+      release._id,
+      {
+        pinned: true,
+        pinOrder: release.pinOrder,
+      },
+      {
+        runValidators: true,
+      }
+    )
+  )
+)
+
+    res.status(200).json({
+      success: true,
+      message: "Pin order updated successfully",
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error updating pin order",
+      error: error.message,
+    })
+  }
+}
+
 module.exports = {
   getAllReleases,
   getReleaseById,
   createRelease,
   updateRelease,
   deleteRelease,
+  updatePinOrder
 };
