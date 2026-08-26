@@ -19,6 +19,8 @@ app.use(
 const allowedOrigins = [
   "http://localhost:5173",
   process.env.FRONTEND_URL,
+  "https://artnologia.com",
+  "https://www.artnologia.com",
 ];
 
 app.use(
